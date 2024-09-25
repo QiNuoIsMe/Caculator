@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.calculator {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.results {
+    margin-bottom: 20px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: right;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button,
+.toggle-button {
+    width: 65px;
+    height: 65px;
+    margin: 5px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.button:hover,
+.toggle-button:hover {
+    background-color: #0056b3;
+}
+
+.equal-sign {
+    background-color: #28a745;
+}
+
+.equal-sign:hover {
+    background-color: #218838;
+}
+
+/* 强制颜色模式下的样式 */
+@media (forced-colors: active) {
+    .calculator {
+        background: Window;
+        /* 使用系统窗口背景色 */
+        color: WindowText;
+        /* 使用系统文本颜色 */
+    }
+
+    .input {
+        background: ButtonFace;
+        /* 使用系统按钮背景色 */
+        color: ButtonText;
+        /* 使用系统按钮文本颜色 */
+        border: 1px solid ButtonText;
+        /* 输入框边框颜色 */
+    }
+
+    .button,
+    .toggle-button {
+        background-color: ButtonFace;
+        /* 按钮使用系统按钮背景色 */
+        color: ButtonText;
+        /* 按钮文本恢复为系统按钮文本 */
+    }
+
+    .button:hover,
+    .toggle-button:hover {
+        background-color: Highlight;
+        /* 悬停背景色使用高亮颜色 */
+    }
+
+    .equal-sign {
+        background-color: Highlight;
+        /* Equal按钮背景高亮颜色 */
+    }
+
+    .equal-sign:hover {
+        background-color: HighlightText;
+        /* Equal按钮悬停高亮文本颜色 */
+    }
+}
