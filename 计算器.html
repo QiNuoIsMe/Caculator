@@ -1,154 +1,285 @@
-<!DOCTYPE html>
-<html lang="zh">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>现代计算器</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>计算器</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            background: linear-gradient(to right, #85D8CE, #085078);
         }
 
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+        #app {
+            font-family: 'Avenir', Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            color: #2c3e50;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-item: center;
         }
 
         .calculator {
-            background-color: rgba(255, 255, 255, 0.9);
+            width: 440px;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 320px;
-            text-align: center;
+            border-radius: 5px;
+            margin: 20px auto;
+            font-size: 16px;
+            background-color: #333333;
         }
 
-        .display {
-            background-color: #222;
-            color: #fff;
-            font-size: 28px;
-            padding: 15px;
-            border-radius: 10px;
-            min-height: 50px;
-            overflow: hidden;
-            text-align: right;
+        .input {
+            width: 420px;
+            height: 50px;
+            border-radius: 0px;
+            border: 1px solid black;
+            background-color: #333333;
+            color: #d9d9d9;
+            padding: 0 5px 0 5px;
+            margin: 0 0px 10px 0px;
+            font-size: 30px;
         }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+        .input:focus,
+        .input:active {
+            border-color: #03a9f4;
+            box-shadow: 0 0 4px #03A9F4;
+            outline: none 0;
         }
 
-        button {
-            padding: 15px;
-            font-size: 18px;
+        .button {
+            margin: 3px;
+            width: 63px;
+            border: 1px solid #0d0d0d;
+            height: 30px;
+            border-radius: 4px;
+            color: #d9d9d9;
+            background-color: #1a1a1a;
             cursor: pointer;
+            outline: none;
+        }
+
+        .mode {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+
+        .equal-sign {
+            background-color: green;
+            width: 133px;
+        }
+
+        .toggle-button {
             border: none;
-            border-radius: 10px;
-            color: white;
-            transition: background-color 0.3s, transform 0.1s;
+            background-color: #333333;
+            cursor: pointer;
+            outline: none;
+            font-size: 1rem;
+            color: #fff;
+            text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.35);
         }
 
-        button:hover {
-            transform: scale(1.05);
+        p {
+            margin-top: 0;
         }
 
-        .operator {
-            background-color: #007bff;
-        }
-
-        .operator:hover {
-            background-color: #0056b3;
-        }
-
-        .clear {
-            background-color: #dc3545;
-        }
-
-        .clear:hover {
-            background-color: #c82333;
-        }
-
-        /* 针对数字按钮 */
-        button:not(.operator):not(.clear) {
-            background-color: #28a745;
-        }
-
-        button:not(.operator):not(.clear):hover {
-            background-color: #218838;
+        button::-moz-focus-inner {
+            border-color: transparent;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="calculator">
-        <div class="display" id="display"></div>
-        <div class="buttons">
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button class="operator" onclick="appendToDisplay('/')">/</button>
-
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button class="operator" onclick="appendToDisplay('*')">*</button>
-
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button class="operator" onclick="appendToDisplay('-')">-</button>
-
-            <button class="clear" onclick="clearDisplay()">C</button>
-            <button onclick="appendToDisplay('0')">0</button>
-            <button class="operator" onclick="calculate()">=</button>
-            <button class="operator" onclick="appendToDisplay('+')">+</button>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <div id="app">
+        <div class="calculator">
+            <button @click="changeModeEvent" class="toggle-button">
+                <p v-if="changeMode">高级计算</p>
+                <p v-else>基础计算</p>
+            </button>
+            <div class="results">
+                <input class="input" v-model="current" />
+            </div>
+            <div class="mode" v-if="changeMode">
+                <button class="button" @click="press">7</button>
+                <button class="button" @click="press">8</button>
+                <button class="button" @click="press">9</button>
+                <button class="button" @click="press">*</button>
+                <button class="button" @click="press">
+                    <=< /button>
+                        <button class="button" @click="press">C</button>
+                        <button class="button" @click="press">4</button>
+                        <button class="button" @click="press($event)">5</button>
+                        <button class="button" @click="press">6</button>
+                        <button class="button" @click="press">/</button>
+                        <button class="button" @click="press">(</button>
+                        <button class="button" @click="press">)</button>
+                        <button class="button" @click="press">1</button>
+                        <button class="button" @click="press">2</button>
+                        <button class="button" @click="press">3</button>
+                        <button class="button" @click="press">-</button>
+                        <button class="button" @click="press">x 2</button>
+                        <button class="button" @click="press">±</button>
+                        <button class="button" @click="press">0</button>
+                        <button class="button" @click="press">.</button>
+                        <button class="button" @click="press">%</button>
+                        <button class="button" @click="press">+</button>
+                        <button class="button equal-sign" @click="press">=</button>
+            </div>
+            <div class="mode" v-else>
+                <button class="button" @click="press">sin</button>
+                <button class="button" @click="press">cos</button>
+                <button class="button" @click="press">tan</button>
+                <button class="button" @click="press">x^</button>
+                <button class="button" @click="press">
+                    <=< /button>
+                        <button class="button" @click="press">C</button>
+                        <button class="button" @click="press">log</button>
+                        <button class="button" @click="press">ln</button>
+                        <button class="button" @click="press">e</button>
+                        <button class="button" @click="press">°</button>
+                        <button class="button" @click="press">rad</button>
+                        <button class="button" @click="press">√</button>
+                        <button class="button" @click="press">7</button>
+                        <button class="button" @click="press">8 </button>
+                        <button class="button" @click="press">9</button>
+                        <button class="button" @click="press">/</button>
+                        <button class="button" @click="press">x 2</button>
+                        <button class="button" @click="press">x !</button>
+                        <button class="button" @click="press">4</button>
+                        <button class="button" @click="press">5</button>
+                        <button class="button" @click="press">6</button>
+                        <button class="button" @click="press">*</button>
+                        <button class="button" @click="press">(</button>
+                        <button class="button" @click="press">)</button>
+                        <button class="button" @click="press">1</button>
+                        <button class="button" @click="press">2</button>
+                        <button class="button" @click="press">3</button>
+                        <button class="button" @click="press">-</button>
+                        <button class="button" @click="press">%</button>
+                        <button class="button" @click="press">±</button>
+                        <button class="button" @click="press">0</button>
+                        <button class="button" @click="press">.</button>
+                        <button class="button" @click="press">π</button>
+                        <button class="button" @click="press">+</button>
+                        <button class="button equal-sign" @click="press">=</button>
+            </div>
         </div>
     </div>
-
     <script>
-        function appendToDisplay(value) {
-            const display = document.getElementById('display');
-            display.textContent += value;
-        }
-
-        function clearDisplay() {
-            const display = document.getElementById('display');
-            display.textContent = '';
-        }
-
-        function calculate() {
-            const display = document.getElementById('display');
-            try {
-                const result = eval(display.textContent);
-                display.textContent = result;
-            } catch (error) {
-                display.textContent = "错误";
+        let app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    current: '',
+                    changeMode: true
+                }
+            },
+            methods: {
+                press: function (event) {
+                    let me = this
+                    let key = event.target.textContent
+                    if (
+                        key != '=' &&
+                        key != 'C' &&
+                        key != '*' &&
+                        key != '/' &&
+                        key != '√' &&
+                        key != "x 2" &&
+                        key != "%" &&
+                        key != "<=" &&
+                        key != "±" &&
+                        key != "sin" &&
+                        key != "cos" &&
+                        key != "tan" &&
+                        key != "log" &&
+                        key != "ln" &&
+                        key != "x^" &&
+                        key != "x !" &&
+                        key != "π" &&
+                        key != "e" &&
+                        key != "rad" &&
+                        key != "°"
+                    ) {
+                        me.current += key
+                    } else if (key === '=') {
+                        if ((me.current).indexOf('^') > -1) {
+                            let base = (me.current).slice(0, (me.current).indexOf('^'))
+                            let exponent = (me.current).slice((me.current).indexOf('^') + 1)
+                            me.current = eval('Math.pow(' + base + ',' + exponent + ')')
+                        } else {
+                            me.current = eval(me.current)
+                        }
+                    } else if (key === 'C') {
+                        me.current = ''
+                    } else if (key === '*') {
+                        me.current += '*'
+                    } else if (key === '/') {
+                        me.current += '/'
+                    } else if (key === '+') {
+                        me.current += '+'
+                    } else if (key === '-') {
+                        me.current += '-'
+                    } else if (key === '±') {
+                        if ((me.current).charAt(0) === '-') {
+                            me.current = (me.current).slice(1)
+                        } else {
+                            me.current = '-' + me.current
+                        }
+                    } else if (key === '<=') {
+                        me.current = me.current.substring(0, me.current.length - 1)
+                    } else if (key === '%') {
+                        me.current = me.current / 100
+                    } else if (key === 'π') {
+                        me.current = me.current * Math.PI
+                    } else if (key === 'x 2') {
+                        me.current = eval(me.current * me.current)
+                    } else if (key === '√') {
+                        me.current = Math.sqrt(me.current)
+                    } else if (key === 'sin') {
+                        me.current = Math.sin(me.current)
+                    } else if (key === 'cos') {
+                        me.current = Math.cos(me.current)
+                    } else if (key === 'tan') {
+                        me.current = Math.tan(me.current)
+                    } else if (key === 'log') {
+                        me.current = Math.log10(me.current)
+                    } else if (key === 'ln') {
+                        me.current = Math.log(me.current)
+                    } else if (key === 'x^') {
+                        me.current += '^'
+                    } else if (key === 'x !') {
+                        let number = 1
+                        if (me.current === 0) {
+                            me.current = '1'
+                        } else if (me.current < 0) {
+                            me.current = NaN
+                        } else {
+                            let number = 1
+                            for (let i = me.current; i > 0; i--) {
+                                number *= i
+                            }
+                            me.current = number
+                        }
+                    } else if (key === 'e') {
+                        me.current = Math.exp(me.current)
+                    } else if (key === 'rad') {
+                        me.current = me.current * (Math.PI / 180)
+                    } else if (key === '°') {
+                        me.current = me.current * (180 / Math.PI)
+                    }
+                },
+                changeModeEvent: function () {
+                    let me = this
+                    me.changeMode = !me.changeMode
+                }
             }
-        }  
+        })
     </script>
-
 </body>
 
 </html>
