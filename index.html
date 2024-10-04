@@ -5,39 +5,49 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>计算器</title>
+    <!-- _____________________css样式______________________ -->
     <style>
+        /*设置整个页面的背景为从 #709bfe到#0d127c的渐变色  */
         body {
-            background: linear-gradient(to right, #85D8CE, #085078);
+            background: linear-gradient(to right, #ffb6f4, #e5aafb);
         }
 
+        /* id选择器 */
         #app {
             font-family: 'Avenir', Helvetica, Arial, sans-serif;
+            /*针对 Webkit 浏览器的css属性 控制字体的平滑处理。antialiased 值表示启用抗锯齿，使文字更清晰易读。 */
             -webkit-font-smoothing: antialiased;
+            /* 针对 Mozilla 浏览器在 macOS 系统上的 CSS 属性，用于控制文本渲染时的平滑处理。
+grayscale 值表示在渲染文本时使用灰度滤镜来平滑字体，这同样有助于提高文本的可读性 */
             -moz-osx-font-smoothing: grayscale;
             text-align: center;
             color: #2c3e50;
+            /*  启用 Flexbox 布局模式 */
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            align-item: center;
+            /* 在交叉轴上居中对齐子元素 */
+            align-items: center;
         }
 
         .calculator {
             width: 440px;
             padding: 20px;
             border-radius: 5px;
-            margin: 20px auto;
+            /* 上下外边距为页面的10%大小 */
+            margin:10% auto;
             font-size: 16px;
-            background-color: #333333;
+            background-color: #467ff0;
         }
 
         .input {
             width: 420px;
-            height: 50px;
-            border-radius: 0px;
-            border: 1px solid black;
-            background-color: #333333;
-            color: #d9d9d9;
+            height: 55px;
+            /* 圆角 */
+            border-radius: 5px;
+            border: 1px solid #62a0bb;
+            background-color: #b3def0;
+            color: #c232ac;
             padding: 0 5px 0 5px;
             margin: 0 0px 10px 0px;
             font-size: 30px;
@@ -47,38 +57,56 @@
         .input:active {
             border-color: #03a9f4;
             box-shadow: 0 0 4px #03A9F4;
+            /* outline: none 0; 移除浏览器默认的聚焦轮廓线，outline: none 表示不显示轮廓 */
             outline: none 0;
         }
 
         .button {
             margin: 3px;
             width: 63px;
-            border: 1px solid #0d0d0d;
+            border: 1px solid #4187aa;
             height: 30px;
             border-radius: 4px;
             color: #d9d9d9;
-            background-color: #1a1a1a;
+            background-color: #61b2db;
+            cursor: pointer;
+            outline: none;
+        }
+        .symbol {
+            margin: 3px;
+            width: 63px;
+            border: 1px solid #2c589e;
+            height: 30px;
+            border-radius: 4px;
+            color: #d9d9d9;
+            background-color: #5496ff;
             cursor: pointer;
             outline: none;
         }
 
         .mode {
             display: flex;
+            /* 不换行，除非超过父容器的宽度则子元素会换到下一行 */
             flex-wrap: wrap;
+            /* 将容器内的所有子元素均匀地分布在主轴上，确保每个子元素之间以及子元素与容器边缘之间的距离是相等的 */
+            /* 同时第一个子元素与容器的起始端和最后一个子元素与容器的末尾端之间的间距也相等 */
             justify-content: space-evenly;
         }
 
         .equal-sign {
-            background-color: green;
+            background-color: #2b6ac2;
             width: 133px;
+            border: 1px solid #1b457f;
+
         }
 
         .toggle-button {
             border: none;
-            background-color: #333333;
+            background-color: #467ff0;
             cursor: pointer;
             outline: none;
             font-size: 1rem;
+            text-align: center;
             color: #fff;
             text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.35);
         }
@@ -86,86 +114,103 @@
         p {
             margin-top: 0;
         }
-
+        /* ::-moz-focus-inner 是一个伪元素，用于设置按钮的聚焦轮廓 */
         button::-moz-focus-inner {
+            /* border-color: transparent; 将聚焦轮廓的颜色设置为透明，这意味着当按钮聚焦时，不会显示默认的边框。 */
             border-color: transparent;
         }
     </style>
+    <!-- __________________________________________________ -->
+
 </head>
 
 <body>
-  <script src="https://cdn.jsdrlivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 从cdn引入Vue.js库，用于构建动态的Web界面 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+    <!-- 定义一个容器,用于Vue.js绑定 -->
     <div id="app">
+        <!-- 计算器界面 -->
         <div class="calculator">
             <button @click="changeModeEvent" class="toggle-button">
-                <p v-if="changeMode">高级计算</p>
-                <p v-else>基础计算</p>
+                <!-- @click 是 Vue.js 中的事件监听器，用于监听点击事件。 -->
+                <!-- 当用户点击这个按钮时，会触发指定的方法changeModeEvent---用于切换计算模式 -->
+                <!-- css样式,类选择器toggle-button -->
+                <!-- v-if 是 Vue.js 中的条件渲染指令,根据表达式的值决定是否渲染该元素 -->
+                <p v-if="changeMode">基础计算</p>
+                <p v-else>高级计算</p>
             </button>
+            <!-- 块级容器,类选择器result-->
             <div class="results">
+                <!-- 类选择器.v-model="current"用于在输入框和 Vue 实例的数据属性(变量) current 之间建立双向绑定。这意味着当用户在输入框中输入时，current 的值会更新，反之亦然。 -->
                 <input class="input" v-model="current" />
             </div>
+            <!-- 条件渲染 -->
             <div class="mode" v-if="changeMode">
+                <!-- 每个按钮都绑定了 click 事件监听器，当按钮被点击时，会调用 press 方法。 -->
                 <button class="button" @click="press">7</button>
                 <button class="button" @click="press">8</button>
                 <button class="button" @click="press">9</button>
-                <button class="button" @click="press">*</button>
-                <button class="button" @click="press">&lt;=</button>
-                        <button class="button" @click="press">C</button>
-                        <button class="button" @click="press">4</button>
-                        <button class="button" @click="press($event)">5</button>
-                        <button class="button" @click="press">6</button>
-                        <button class="button" @click="press">/</button>
-                        <button class="button" @click="press">(</button>
-                        <button class="button" @click="press">)</button>
-                        <button class="button" @click="press">1</button>
-                        <button class="button" @click="press">2</button>
-                        <button class="button" @click="press">3</button>
-                        <button class="button" @click="press">-</button>
-                        <button class="button" @click="press">x 2</button>
-                        <button class="button" @click="press">±</button>
-                        <button class="button" @click="press">0</button>
-                        <button class="button" @click="press">.</button>
-                        <button class="button" @click="press">%</button>
-                        <button class="button" @click="press">+</button>
-                        <button class="button equal-sign" @click="press">=</button>
+                <button class="button symbol" @click="press">*</button>
+                <!-- 注意此处不能用<=中的小于或大于号,应用&lt小于,&gt大于 -->
+                <button class="button symbol" @click="press">&lt;=</button>
+                <button class="button symbol" @click="press">C</button>
+                <button class="button" @click="press">4</button>
+                <button class="button" @click="press($event)">5</button>
+                <button class="button" @click="press">6</button>
+                <button class="button symbol" @click="press">/</button>
+                <button class="button symbol" @click="press">(</button>
+                <button class="button symbol" @click="press">)</button>
+                <button class="button" @click="press">1</button>
+                <button class="button" @click="press">2</button>
+                <button class="button" @click="press">3</button>
+                <button class="button symbol" @click="press">-</button>
+                <button class="button symbol" @click="press">x 2</button>
+                <button class="button symbol" @click="press">±</button>
+                <button class="button" @click="press">0</button>
+                <button class="button symbol" @click="press">.</button>
+                <button class="button symbol" @click="press">%</button>
+                <button class="button symbol" @click="press">+</button>
+                <!-- 两个类选择器 用于执行计算的等号按钮-->
+                <button class="button equal-sign" @click="press">=</button>
             </div>
+
             <div class="mode" v-else>
-                <button class="button" @click="press">sin</button>
-                <button class="button" @click="press">cos</button>
-                <button class="button" @click="press">tan</button>
-                <button class="button" @click="press">x^</button>
-                <button class="button" @click="press">&lt;=</button>
-                        <button class="button" @click="press">C</button>
-                        <button class="button" @click="press">log</button>
-                        <button class="button" @click="press">ln</button>
-                        <button class="button" @click="press">e</button>
-                        <button class="button" @click="press">°</button>
-                        <button class="button" @click="press">rad</button>
-                        <button class="button" @click="press">√</button>
-                        <button class="button" @click="press">7</button>
-                        <button class="button" @click="press">8 </button>
-                        <button class="button" @click="press">9</button>
-                        <button class="button" @click="press">/</button>
-                        <button class="button" @click="press">x 2</button>
-                        <button class="button" @click="press">x !</button>
-                        <button class="button" @click="press">4</button>
-                        <button class="button" @click="press">5</button>
-                        <button class="button" @click="press">6</button>
-                        <button class="button" @click="press">*</button>
-                        <button class="button" @click="press">(</button>
-                        <button class="button" @click="press">)</button>
-                        <button class="button" @click="press">1</button>
-                        <button class="button" @click="press">2</button>
-                        <button class="button" @click="press">3</button>
-                        <button class="button" @click="press">-</button>
-                        <button class="button" @click="press">%</button>
-                        <button class="button" @click="press">±</button>
-                        <button class="button" @click="press">0</button>
-                        <button class="button" @click="press">.</button>
-                        <button class="button" @click="press">π</button>
-                        <button class="button" @click="press">+</button>
-                        <button class="button equal-sign" @click="press">=</button>
+                <button class="button symbol" @click="press">sin</button>
+                <button class="button symbol" @click="press">cos</button>
+                <button class="button symbol" @click="press">tan</button>
+                <button class="button symbol" @click="press">x^</button>
+                <button class="button symbol" @click="press">&lt;=</button>
+                <button class="button symbol" @click="press">C</button>
+                <button class="button symbol" @click="press">log</button>
+                <button class="button symbol" @click="press">ln</button>
+                <button class="button symbol" @click="press">e</button>
+                <button class="button symbol" @click="press">°</button>
+                <button class="button symbol" @click="press">rad</button>
+                <button class="button symbol" @click="press">√</button>
+                <button class="button" @click="press">7</button>
+                <button class="button" @click="press">8 </button>
+                <button class="button" @click="press">9</button>
+                <button class="button symbol" @click="press">/</button>
+                <button class="button symbol" @click="press">x 2</button>
+                <button class="button symbol" @click="press">x !</button>
+                <button class="button" @click="press">4</button>
+                <button class="button" @click="press">5</button>
+                <button class="button" @click="press">6</button>
+                <button class="button symbol" @click="press">*</button>
+                <button class="button symbol" @click="press">(</button>
+                <button class="button symbol" @click="press">)</button>
+                <button class="button" @click="press">1</button>
+                <button class="button" @click="press">2</button>
+                <button class="button" @click="press">3</button>
+                <button class="button symbol" @click="press">-</button>
+                <button class="button symbol" @click="press">%</button>
+                <button class="button symbol" @click="press">±</button>
+                <button class="button" @click="press">0</button>
+                <button class="button symbol" @click="press">.</button>
+                <button class="button symbol" @click="press">π</button>
+                <button class="button symbol" @click="press">+</button>
+                <button class="button equal-sign" @click="press">=</button>
             </div>
         </div>
     </div>
@@ -273,7 +318,12 @@
                     }
                 },
                 changeModeEvent: function () {
+                    // 在 JavaScript 的函数中，this 关键字通常用于引用当前上下文的对象，也就是当前的 Vue 实例。
+                    // let是JavaScript中变量声明的关键字，用于声明块级元素范围内的变量
+                    // me是变量，存储了this的引用，可以在函数内部访问Vue的属性和方法。若不这样，则需要写出this.changeMode = !this.changeMode
                     let me = this
+                    // 切换 changeMode 的布尔值，从而改变计算器的模式。例如，如果计算器当前处于基础计算模式（changeMode 为 true），
+                    // 那么执行这个方法后，它会切换到高级计算模式（changeMode 变为 false）
                     me.changeMode = !me.changeMode
                 }
             }
