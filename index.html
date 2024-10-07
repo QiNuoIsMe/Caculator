@@ -1,69 +1,60 @@
-<!-- <!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"> -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
     <title>计算器</title>
-    <!-- _____________________css样式______________________ -->
     <style>
-        /*设置整个页面的背景为从 #709bfe到#0d127c的渐变色  */
+        /* 设置整个页面的背景为从 #ffb6f4到#e5aafb的渐变色 */
         body {
             background: linear-gradient(to right, #ffb6f4, #e5aafb);
         }
 
-        /* id选择器 */
+        /* id选择器，用于Vue应用的根元素 */
         #app {
             font-family: 'Avenir', Helvetica, Arial, sans-serif;
-            /*针对 Webkit 浏览器的css属性 控制字体的平滑处理。antialiased 值表示启用抗锯齿，使文字更清晰易读。 */
-            -webkit-font-smoothing: antialiased;
-            /* 针对 Mozilla 浏览器在 macOS 系统上的 CSS 属性，用于控制文本渲染时的平滑处理。
-grayscale 值表示在渲染文本时使用灰度滤镜来平滑字体，这同样有助于提高文本的可读性 */
-            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased; /* Webkit浏览器的字体平滑处理 */
+            -moz-osx-font-smoothing: grayscale; /* Mozilla浏览器在macOS系统上的字体平滑处理 */
             text-align: center;
             color: #2c3e50;
-            /*  启用 Flexbox 布局模式 */
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            /* 在交叉轴上居中对齐子元素 */
-            align-items: center;
+            align-items: center; /* 在交叉轴上居中对齐子元素 */
         }
 
+        /* 类选择器，用于计算器容器 */
         .calculator {
             width: 440px;
             padding: 20px;
             border-radius: 5px;
-            /* 上下外边距为页面的10%大小 */
-            margin:10% auto;
+            margin: 10% auto; /* 上下外边距为页面的10%大小 */
             font-size: 16px;
             background-color: #467ff0;
         }
 
+        /* 输入框样式 */
         .input {
             width: 420px;
             height: 55px;
-            /* 圆角 */
             border-radius: 5px;
             border: 1px solid #62a0bb;
             background-color: #b3def0;
             color: #c232ac;
-            padding: 0 5px 0 5px;
-            margin: 0 0px 10px 0px;
+            padding: 0 5px;
+            margin: 0 0 10px;
             font-size: 30px;
         }
 
+        /* 输入框聚焦或激活时的样式 */
         .input:focus,
         .input:active {
             border-color: #03a9f4;
             box-shadow: 0 0 4px #03A9F4;
-            /* outline: none 0; 移除浏览器默认的聚焦轮廓线，outline: none 表示不显示轮廓 */
-            outline: none 0;
+            outline: none; /* 移除浏览器默认的聚焦轮廓线 */
         }
 
+        /* 普通按钮样式 */
         .button {
             margin: 3px;
             width: 63px;
@@ -75,6 +66,8 @@ grayscale 值表示在渲染文本时使用灰度滤镜来平滑字体，这同�
             cursor: pointer;
             outline: none;
         }
+
+        /* 特殊符号按钮样式 */
         .symbol {
             margin: 3px;
             width: 63px;
@@ -87,22 +80,21 @@ grayscale 值表示在渲染文本时使用灰度滤镜来平滑字体，这同�
             outline: none;
         }
 
+        /* 用于按钮组的布局 */
         .mode {
             display: flex;
-            /* 不换行，除非超过父容器的宽度则子元素会换到下一行d */
             flex-wrap: wrap;
-            /* 将容器内的所有子元素均匀地分布在主轴上，确保每个子元素之间以及子元素与容器边缘之间的距离是相等的 */
-            /* 同时第一个子元素与容器的起始端和最后一个子元素与容器的末尾端之间的间距也相等 */
-            justify-content: space-evenly;
+            justify-content: space-evenly; /* 将容器内的所有子元素均匀地分布在主轴上 */
         }
 
+        /* 等号按钮的特殊样式 */
         .equal-sign {
             background-color: #2b6ac2;
             width: 133px;
             border: 1px solid #1b457f;
-
         }
 
+        /* 切换按钮的样式 */
         .toggle-button {
             border: none;
             background-color: #467ff0;
@@ -114,17 +106,16 @@ grayscale 值表示在渲染文本时使用灰度滤镜来平滑字体，这同�
             text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.35);
         }
 
+        /* 去除<p>标签的外边距 */
         p {
             margin-top: 0;
         }
-        /* ::-moz-focus-inner 是一个伪元素，用于设置按钮的聚焦轮廓 */
+
+        /* 用于设置按钮的聚焦轮廓 */
         button::-moz-focus-inner {
-            /* border-color: transparent; 将聚焦轮廓的颜色设置为透明，这意味着当按钮聚焦时，不会显示默认的边框。 */
-            border-color: transparent;
+            border-color: transparent; /* 将聚焦轮廓的颜色设置为透明 */
         }
     </style>
-    <!-- __________________________________________________ -->
-
 </head>
 
 <body>
