@@ -6,7 +6,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>计算器</title>
     <style>
-        /* 设置整个页面的背景为从 #ffb6f4到#e5aafb的渐变色 */
         body {
             background: linear-gradient(to right, #ffb6f4, #e5aafb);
         }
@@ -14,22 +13,20 @@
         /* id选择器，用于Vue应用的根元素 */
         #app {
             font-family: 'Avenir', Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased; /* Webkit浏览器的字体平滑处理 */
-            /* -moz-osx-font-smoothing: grayscale; Mozilla浏览器在macOS系统上的字体平滑处理 */
+            -webkit-font-smoothing: antialiased; 
             text-align: center;
             color: #2c3e50;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            align-items: center; /* 在交叉轴上居中对齐子元素 */
+            align-items: center; 
         }
 
-        /* 类选择器，用于计算器容器 */
         .calculator {
             width: 440px;
             padding: 20px;
             border-radius: 5px;
-            margin: 10% auto; /* 上下外边距为页面的10%大小 */
+            margin: 10% auto;  
             font-size: 16px;
             background-color: #467ff0;
         }
@@ -47,15 +44,13 @@
             font-size: 30px;
         }
 
-        /* 输入框聚焦或激活时的样式 */
         .input:focus,
         .input:active {
             border-color: #03a9f4;
             box-shadow: 0 0 4px #03A9F4;
-            outline: none; /* 移除浏览器默认的聚焦轮廓线 */
+            outline: none;  
         }
 
-        /* 普通按钮样式 */
         .button {
             margin: 3px;
             width: 63px;
@@ -68,7 +63,6 @@
             outline: none;
         }
 
-        /* 特殊符号按钮样式 */
         .symbol {
             margin: 3px;
             width: 63px;
@@ -81,21 +75,18 @@
             outline: none;
         }
 
-        /* 用于按钮组的布局 */
         .mode {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-evenly; /* 将容器内的所有子元素均匀地分布在主轴上 */
+            justify-content: space-evenly; 
         }
 
-        /* 等号按钮的特殊样式 */
         .equal-sign {
             background-color: #2b6ac2;
             width: 133px;
             border: 1px solid #1b457f;
         }
 
-        /* 切换按钮的样式 */
         .toggle-button {
             border: none;
             background-color: #467ff0;
@@ -107,48 +98,33 @@
             text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.35);
         }
 
-        /* 去除<p>标签的外边距 */
         p {
             margin-top: 0;
         }
 
-        /* 用于设置按钮的聚焦
-        轮廓 */
         button::-moz-focus-inner {
-            border-color: transparent; /* 将聚焦轮廓的颜色设置为透明 */
+            border-color: transparent;  
         }
     </style>
 </head>
 
 <body>
-    <!-- 从cdn引入Vue.js库，用于构建动态的Web界面 -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
-    <!-- 定义一个容器,用于Vue.js绑定 -->
     <div id="app">
-        <!-- 计算器界面 -->
         <div class="calculator">
-            <button @click="changeModeEvent" class="toggle-button">
-                <!-- @click 是 Vue.js 中的事件监听器，用于监听点击事件。 -->
-                <!-- 当用户点击这个按钮时，会触发指定的方法changeModeEvent---用于切换计算模式 -->
-                <!-- css样式,类选择器toggle-button -->
-                <!-- v-if 是 Vue.js 中的条件渲染指令,根据表达式的值决定是否渲染该元素 -->
+            <button @click="changeModeEvent" class="toggle-button">              
                 <p v-if="changeMode">基础计算</p>
                 <p v-else>高级计算</p>
             </button>
-            <!-- 块级容器,类选择器result-->
             <div class="results">
-                <!-- 类选择器.v-model="current"用于在输入框和 Vue 实例的数据属性(变量) current 之间建立双向绑定。这意味着当用户在输入框中输入时，current 的值会更新，反之亦然。 -->
                 <input class="input" v-model="current" />
             </div>
-            <!-- 条件渲染 -->
             <div class="mode" v-if="changeMode">
-                <!-- 每个按钮都绑定了 click 事件监听器，当按钮被点击时，会调用 press 方法。 -->
                 <button class="button" @click="press">7</button>
                 <button class="button" @click="press">8</button>
                 <button class="button" @click="press">9</button>
                 <button class="button symbol" @click="press">*</button>
-                <!-- 注意此处不能用<=中的小于或大于号,应用&lt小于,&gt大于 -->
                 <button class="button symbol" @click="press">&lt;=</button>
                 <button class="button symbol" @click="press">C</button>
                 <button class="button" @click="press">4</button>
@@ -167,7 +143,6 @@
                 <button class="button symbol" @click="press">.</button>
                 <button class="button symbol" @click="press">%</button>
                 <button class="button symbol" @click="press">+</button>
-                <!-- 两个类选择器 用于执行计算的等号按钮-->
                 <button class="button equal-sign" @click="press">=</button>
             </div>
 
@@ -314,12 +289,7 @@
                     }
                 },
                 changeModeEvent: function () {
-                    // 在 JavaScript 的函数中，this 关键字通常用于引用当前上下文的对象，也就是当前的 Vue 实例。
-                    // let是JavaScript中变量声明的关键字，用于声明块级元素范围内的变量
-                    // me是变量，存储了this的引用，可以在函数内部访问Vue的属性和方法。若不这样，则需要写出this.changeMode = !this.changeMode
-                    let me = this
-                    // 切换 changeMode 的布尔值，从而改变计算器的模式。例如，如果计算器当前处于基础计算模式（changeMode 为 true），
-                    // 那么执行这个方法后，它会切换到高级计算模式（changeMode 变为 false）
+                    let me = this                     
                     me.changeMode = !me.changeMode
                 }
             }
