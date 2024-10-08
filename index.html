@@ -3,8 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>计算器</title>
-    <!-- 从cdn引入Vue.js库，用于构建动态的Web界面 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <style>
         /* 设置整个页面的背景为从 #ffb6f4到#e5aafb的渐变色 */
         body {
@@ -215,11 +214,9 @@
     <script>
         let app = new Vue({
             el: '#app',
-            data() {
-                return {
+            data:{               
                     current: '',
                     changeMode: true
-                }
             },
             methods: {
                 press: function (event) {
@@ -327,6 +324,9 @@
             }
         })
     </script>
+    <!-- 从cdn引入Vue.js库，用于构建动态的Web界面 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+    <!-- <script type="text/javascript" src="/app.js"></script> -->
 </body>
 
 </html>
