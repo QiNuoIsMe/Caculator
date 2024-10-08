@@ -5,25 +5,24 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>计算器</title>
-     <!-- 从cdn引入Vue.js库，用于构建动态的Web界面 -->
+    <!-- 从cdn引入Vue.js库，用于构建动态的Web界面 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <style>
         /* 设置整个页面的背景为从 #ffb6f4到#e5aafb的渐变色 */
         body {
-            background: linear-gradient(to right, #ffb6f4, #e5aafb);
+            background: linear-gradient(to right, #fffbfe, #fbefff);
         }
 
         /* id选择器，用于Vue应用的根元素 */
         #app {
             font-family: 'Avenir', Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased; /* Webkit浏览器的字体平滑处理 */
-            -moz-osx-font-smoothing: grayscale; /* Mozilla浏览器在macOS系统上的字体平滑处理 */
             text-align: center;
             color: #2c3e50;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            align-items: center; /* 在交叉轴上居中对齐子元素 */
+            align-items: center;
+            /* 在交叉轴上居中对齐子元素 */
         }
 
         /* 类选择器，用于计算器容器 */
@@ -31,7 +30,8 @@
             width: 440px;
             padding: 20px;
             border-radius: 5px;
-            margin: 10% auto; /* 上下外边距为页面的10%大小 */
+            margin: 10% auto;
+            /* 上下外边距为页面的10%大小 */
             font-size: 16px;
             background-color: #467ff0;
         }
@@ -54,7 +54,8 @@
         .input:active {
             border-color: #03a9f4;
             box-shadow: 0 0 4px #03A9F4;
-            outline: none; /* 移除浏览器默认的聚焦轮廓线 */
+            outline: none;
+            /* 移除浏览器默认的聚焦轮廓线 */
         }
 
         /* 普通按钮样式 */
@@ -87,7 +88,8 @@
         .mode {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-evenly; /* 将容器内的所有子元素均匀地分布在主轴上 */
+            justify-content: space-evenly;
+            /* 将容器内的所有子元素均匀地分布在主轴上 */
         }
 
         /* 等号按钮的特殊样式 */
@@ -114,16 +116,17 @@
             margin-top: 0;
         }
 
-        /* 用于设置按钮的聚焦
-        轮廓 */
-        button::-moz-focus-inner {
-            border-color: transparent; /* 将聚焦轮廓的颜色设置为透明 */
+        button:focus {
+            outline: 2px solid blue;
+            /* 用蓝色轮廓替代，您可以选择合适的颜色 */
+            outline-offset: 2px;
+            /* 增加轮廓与按钮间距 */
         }
     </style>
 </head>
 
 <body>
-   
+
     <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
     <!-- 定义一个容器,用于Vue.js绑定 -->
     <div id="app">
