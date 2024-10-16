@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>计算器</title>
@@ -119,14 +120,43 @@
             outline-offset: 2px;
             /* 增加轮廓与按钮间距 */
         }
+
+        /* 右上角图片定位 */
+        /* 右上角图片定位 */
+        .top-right {
+            position: fixed;
+            top: 10%;
+            /* 距离顶部10px */
+            right: 10%;
+            /* 距离右侧10px */
+            width: 100px;
+            /* 根据需要调整图片大小 */
+            height: auto;
+            /* 保持图片宽高比 */
+        }
+
+        /* 左下角图片定位 */
+        .bottom-left {
+            position: fixed;
+            bottom: 10%;
+            /* 距离底部10px */
+            left: 10%;
+            /* 距离左侧10px */
+            width: 100px;
+            /* 根据需要调整图片大小 */
+            height: auto;
+            /* 保持图片宽高比 */
+        }
     </style>
 </head>
 
 <body>
-
+    <img src="photo/32.jpg" alt="" class="top-right">
     <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+
     <!-- 定义一个容器,用于Vue.js绑定 -->
     <div id="app">
+
         <!-- 计算器界面 -->
         <div class="calculator">
             <button @click="changeModeEvent" class="toggle-button">
@@ -140,7 +170,7 @@
             <!-- 块级容器,类选择器result-->
             <div class="results">
                 <!-- 类选择器.v-model="current"用于在输入框和 Vue 实例的数据属性(变量) current 之间建立双向绑定。这意味着当用户在输入框中输入时，current 的值会更新，反之亦然。 -->
-                <input class="input" v-model="current" >
+                <input class="input" v-model="current">
             </div>
             <!-- 条件渲染 -->
             <div class="mode" v-if="changeMode">
@@ -210,13 +240,15 @@
                 <button class="button equal-sign" @click="press">=</button>
             </div>
         </div>
+
     </div>
+    <img src="photo/384.jpg" alt="" class="bottom-left">
     <script>
         let app = new Vue({
             el: '#app',
-            data:{               
-                    current: '',
-                    changeMode: true
+            data: {
+                current: '',
+                changeMode: true
             },
             methods: {
                 press: function (event) {
@@ -322,7 +354,7 @@
                     me.changeMode = !me.changeMode
                 }
             }
-        })
+        });
     </script>
     <!-- 从cdn引入Vue.js库，用于构建动态的Web界面 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
